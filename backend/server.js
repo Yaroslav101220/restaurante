@@ -161,7 +161,7 @@ app.post('/orden', (req, res) => {
         id: `PED-${String(contadorPedidos).padStart(3, '0')}`,
         status: 'preparando',
         prioridad: req.body.pedido.some(item => item.nombre?.toLowerCase().includes('bebida')) ? 'baja' : 'alta',
-        timestamp: new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' }),
+        timestamp: new Date(new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' })).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' })
         mesa: req.body.mesa || '0'
     };
 
