@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Cargar productos al inicio
-    fetch('/menu')
+    fetch('https://restaurante-jkxc.onrender.com/menu')
         .then(response => response.json())
         .then(data => data.forEach(product => addProductToDOM(product)))
         .catch(error => mostrarNotificacion('Error al cargar el menú: ' + error, 'error'));
@@ -55,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const method = productForm.querySelector('button').textContent === 'Agregar Producto' ? 'POST' : 'PUT';
-        const url = method === 'POST' ? '/menu' : `/menu/${editingId}`;
+        const url = method === 'POST' ? 'https://restaurante-jkxc.onrender.com/menu' : `https://restaurante-jkxc.onrender.com/menu/${editingId}`;
 
         fetch(url, {
             method: method,
@@ -96,7 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let editingId;
     window.editProduct = (id) => {
-        fetch('/menu')
+        fetch('https://restaurante-jkxc.onrender.com/menu')
             .then(response => response.json())
             .then(menu => {
                 const product = menu.find(p => p.id == id);
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('confirmDelete').addEventListener('click', () => {
         if (currentDeleteId) {
-            fetch(`/menu/${currentDeleteId}`, { method: 'DELETE' })
+            fetch(`https://restaurante-jkxc.onrender.com/menu/${currentDeleteId}`, { method: 'DELETE' })
                 .then(() => {
                     mostrarNotificacion('Producto eliminado exitosamente');
                     document.getElementById('customConfirm').style.display = 'none';
@@ -143,11 +143,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch(error => mostrarNotificacion('Error al eliminar: ' + error, 'error'));
         }
     });
+
     function descargarReporteDiario() {
-        fetch('/descargar-excel')
+        fetch('https://restaurante-jkxc.onrender.com/descargar-excel')
             .then(response => {
                 if (response.ok) {
-                    window.open('/descargar-excel', '_blank');
+                    window.open('https://restaurante-jkxc.onrender.com/descargar-excel', '_blank');
                 } else {
                     alert('No hay pedidos registrados hoy');
                 }
