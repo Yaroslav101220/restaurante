@@ -20,9 +20,9 @@
     </div>
 
     <!-- Conexión dinámica sin IP fija -->
-    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://restaurante-jkxc.onrender.com/socket.io/socket.io.js"></script>
     <script>
-        const socket = io(); // Conexión automática al mismo servidor
+        const socket = io('https://restaurante-jkxc.onrender.com'); // Conexión automática al mismo servidor
         
         const listaOrdenes = document.getElementById('lista-ordenes');
         let currentFilter = 'todos';
@@ -99,7 +99,7 @@
             if (e.target.classList.contains('cambiar-estado')) {
                 const id = e.target.dataset.id;
                 const status = e.target.value;
-                fetch(`/orden/${id}`, {
+                fetch(`https://restaurante-jkxc.onrender.com/orden/${id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ status })
@@ -108,7 +108,7 @@
         });
 
         // Cargar pedidos existentes
-        fetch('/ordenes')
+        fetch('https://restaurante-jkxc.onrender.com/ordenes')
             .then(res => res.json())
             .then(data => {
                 ordenes = data;
