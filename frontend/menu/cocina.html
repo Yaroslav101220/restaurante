@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitor de Cocina</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <div class="admin-body">
+        <h1 class="animate__animated animate__fadeInDown">Pedidos - Cocina 👨‍🍳🍽️</h1>
+        <div class="filtros">
+            <button class="filtro activo" data-filtro="todos">Todos</button>
+            <button class="filtro" data-filtro="preparando">Preparando</button>
+            <button class="filtro" data-filtro="listo">Listo</button>
+        </div>
+        <div id="lista-ordenes"></div>
+    </div>
+
+    <!-- Conexión dinámica sin IP fija -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io(); // Conexión automática al mismo servidor
+        
+        const listaOrdenes = document.getElementById('lista-ordenes');
+        let currentFilter = 'todos';
+        let ordenes = [];
+
+        // Mostrar pedidos
+        const renderOrdenes = (ordenes) => {
+            listaOrdenes.innerHTML = ordenes
+                .filter(orden => currentFilter === 'todos' || orden.status === currentFilter)
+                .map(orden => `
+                    <div class="orden animate__animated animate__fadeInUp ${orden.prioridad} ${orden.status}">
+                        <div class="orden-header">
+                            <h3>Pedido #${orden.id}</h3>
+                            <div class="orden-meta">
+                                <span class="timestamp">${orden.timestamp}</span>
+                                <span class="prioridad">${orden.prioridad.toUpperCase()}</span>
+                            </div>
+                        </div>
+                        <ul>
+                            ${orden.pedido.map(item => `
+                                <li>${item.nombre}${item.sabor ? ` (${item.sabor})` : ''} 
+                                    <strong>x${item.cantidad}</strong>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        ${orden.nota ? `<div class="nota"><strong>Nota:</strong> ${orden.nota}</div>` : ''}
+                        <div class="total-orden">
+                            <p>Total: 
+                                <span class="total-cop">$${orden.totalCop.toLocaleString('es-CO')} COP</span>
+                                <span class="total-usd"> / $${orden.totalUsd.toFixed(2)} USD</span>
+                            </p>
+                        </div>
+                        <div class="mesa-container">
+                            <span class="mesa">📌 Mesa ${orden.mesa}</span>
+                        </div>
+                        <div class="orden-acciones">
+                            <select class="cambiar-estado" data-id="${orden.id}">
+                                <option ${orden.status === 'preparando' ? 'selected' : ''} value="preparando">Preparando</option>
+                                <option ${orden.status === 'listo' ? 'selected' : ''} value="listo">Listo para servir</option>
+                            </select>
+                        </div>
+                    </div>
+                `).join('');
+        };
+
+        // Escuchar nuevos pedidos
+        socket.on('nueva-orden', (nuevaOrden) => {
+            ordenes.unshift(nuevaOrden);
+            renderOrdenes(ordenes);
+            new Audio('notification.mp3').play();
+        });
+
+        // Escuchar cambios de estado
+        socket.on('actualizar-estado', ({ id, status }) => {
+            const orden = ordenes.find(o => o.id === id);
+            if (orden) {
+                orden.status = status;
+                renderOrdenes(ordenes);
+            }
+        });
+
+        // Filtros
+        document.querySelectorAll('.filtro').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector('.filtro.activo')?.classList.remove('activo');
+                btn.classList.add('activo');
+                currentFilter = btn.dataset.filtro;
+                renderOrdenes(ordenes);
+            });
+        });
+
+        // Cambiar estado de pedido
+        listaOrdenes.addEventListener('change', (e) => {
+            if (e.target.classList.contains('cambiar-estado')) {
+                const id = e.target.dataset.id;
+                const status = e.target.value;
+                fetch(`/orden/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ status })
+                });
+            }
+        });
+
+        // Cargar pedidos existentes
+        fetch('/ordenes')
+            .then(res => res.json())
+            .then(data => {
+                ordenes = data;
+                renderOrdenes(ordenes);
+            })
+            .catch(error => console.error('Error:', error));
+    </script>
+</body>
+</html>

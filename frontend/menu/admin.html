@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Administración del Menú</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-body"> 
+    <h1>Administración del Menú</h1>
+    <div id="notificacion" class="notificacion">
+        <div class="notificacion-content">
+            <svg class="notificacion-icon" viewBox="0 0 24 24"></svg>
+            <span class="notificacion-text"></span>
+        </div>
+    </div>
+
+    <div id="customConfirm" class="modal-confirm">
+        <div class="confirm-content">
+            <span class="close-confirm">&times;</span>
+            <h3>¿Eliminar Producto?</h3>
+            <p>Esta acción no se puede deshacer</p>
+            <div class="confirm-buttons">
+                <button id="confirmCancel">Cancelar</button>
+                <button id="confirmDelete">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <form id="productForm">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
+        
+        <label for="categoria">Categoría:</label>
+        <select id="categoria" required>
+            <option value="general">Menú General</option>
+            <option value="sopas">Sopas del Día</option>
+            <option value="bebidas">Gaseosas y Bebidas</option>
+        </select>
+        
+        <div id="saboresContainer" style="display: none;">
+            <label for="sabores">Sabores (separados por comas):</label>
+            <input type="text" id="sabores" placeholder="Ej: Coca-Cola, Pepsi, Sprite">
+        </div>
+        
+        <label for="imagen">URL de la Imagen:</label>
+        <input type="url" id="imagen" required>
+        
+        <label for="precioCop">Precio (COP):</label>
+        <input type="number" id="precioCop" required>
+        
+        <label for="precioUsd">Precio (USD):</label>
+        <input 
+            type="number" 
+            id="precioUsd" 
+            step="0.01" 
+            lang="en"
+            required
+            placeholder="Ej: 8.75"
+        >
+        
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" required></textarea>
+        
+        <button type="submit">Agregar Producto</button>
+    </form>
+    <div class="reporte-container">
+        <button onclick="descargarReporteDiario()" class="btn-excel">
+            📥 Descargar Reporte Diario
+        </button>
+    </div>
+
+    <h2>Lista de Productos</h2>
+    <ul id="productList"></ul>
+
+    <script src="admin.js"></script>
+</body>
+</html>
