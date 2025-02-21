@@ -15,7 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Conexión con Socket.IO
     const socket = io('https://restaurante-jkxc.onrender.com');
-    socket.on('menu-actualizado', renderizarMenu);
 
     // Función para renderizar el menú
     const renderizarMenu = async () => {
@@ -69,6 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Llamar a la función al cargar la página
     renderizarMenu();
+
+    // Escuchar actualizaciones del menú
+    socket.on('menu-actualizado', renderizarMenu);
 
     // Función para agregar un producto al pedido
     const agregarAlPedido = (event) => {
