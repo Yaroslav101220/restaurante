@@ -5,6 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const fs = require('fs');
 const ExcelJS = require('exceljs');
+const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const app = express();
@@ -110,23 +111,35 @@ app.use(express.static(path.join(__dirname, '../frontend/menu')));
 app.use(express.json());
 
 // ==================== SEGURIDAD MEJORADA ==================== 
-// Middleware de autenticación para Admin
-app.use('/admin', (req, res, next) => {
-    const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
-    const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':');
-    if (login === process.env.ADMIN_USER && password === process.env.ADMIN_PASS) return next();
-    res.set('WWW-Authenticate', 'Basic realm="Acceso restringido"');
-    res.status(401).send('Autenticación requerida');
+// Middleware de autenticación con JWT
+const authenticateJWT = (req, res, next) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (token) {
+        jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+            req.user = user;
+            next();
+        });
+    } else {
+        res.sendStatus(401);
+    }
+};
+
+// Ruta para generar un token JWT
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+    if (username === process.env.COOK_USER && password === process.env.COOK_PASS) {
+        const token = jwt.sign({ username }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        res.json({ token });
+    } else {
+        res.status(401).send('Credenciales incorrectas');
+    }
 });
 
-// Middleware de autenticación para Cocina
-app.use('/cocina', (req, res, next) => {
-    const b64auth = (req.headers.authorization || '').split(' ')[1] || '';
-    const [login, password] = Buffer.from(b64auth, 'base64').toString().split(':');
-    if (login === process.env.COOK_USER && password === process.env.COOK_PASS) return next();
-    res.set('WWW-Authenticate', 'Basic realm="Acceso restringido"');
-    res.status(401).send('Autenticación requerida');
-});
+// Proteger la ruta de cocina con JWT
+app.use('/cocina', authenticateJWT, express.static(path.join(__dirname, '../frontend/menu')));
 
 // Validación de pedidos
 const validarPedido = (pedido) => {
