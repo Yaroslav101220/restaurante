@@ -9,23 +9,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const mesa = urlParams.get('mesa') || '0';
     
-
     let pedido = [];
     let totalCop = 0;
     let totalUsd = 0;
 
-    // Conexión con Socket.IO (opcional)
-    let socket;
-    try {
-        socket = io('http://192.168.100.212:3000'); // Cambia a tu IP local
-        socket.on('menu-actualizado', renderizarMenu);
-    } catch (error) {
-        console.log('Socket.IO no está disponible. Modo estático activado.');
-    }
+    // Conexión con Socket.IO
+    const socket = io('https://restaurante-jkxc.onrender.com');
+    socket.on('menu-actualizado', renderizarMenu);
 
     // Función para renderizar el menú
     const renderizarMenu = async () => {
-        const response = await fetch('/menu');
+        const response = await fetch('https://restaurante-jkxc.onrender.com/menu');
         const menu = await response.json();
         
         // Mapear categorías a IDs de contenedores
@@ -81,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const button = event.target;
         const platoPadre = button.closest('.plato');
         const nombre = button.getAttribute('data-nombre');
-        const sabor = platoPadre.querySelector('.sabor-jugo')?.value; // Captura el sabor seleccionado
+        const sabor = platoPadre.querySelector('.sabor-jugo')?.value;
         const precioCop = parseFloat(button.getAttribute('data-precio-cop'));
         const precioUsd = parseFloat(button.getAttribute('data-precio-usd'));
 
@@ -188,7 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }).then((result) => {
             if (result.isConfirmed) {
                 const nota = notas.value;
-                fetch('http://192.168.100.212:3000/orden', {
+                fetch('https://restaurante-jkxc.onrender.com/orden', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ 
@@ -196,7 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         totalCop, 
                         totalUsd, 
                         nota,
-                        mesa  // Paso 2: Incluir la mesa en el cuerpo del pedido
+                        mesa
                     })
                 })
                 .then(response => {
@@ -212,8 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
                             position: 'top-end',
                             timer: 3000
                         });
-
-                        
 
                         // Reiniciar interfaz
                         mensajeConfirmacion.classList.remove('mensaje-oculto');
