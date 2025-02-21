@@ -5,7 +5,7 @@ const path = require('path');
 const cors = require('cors');
 const fs = require('fs');
 const ExcelJS = require('exceljs');
-require('dotenv').config(); // Añadido para usar variables de entorno
+require('dotenv').config();
 
 const app = express();
 const server = http.createServer(app);
@@ -250,12 +250,7 @@ app.get('/', (req, res) => {
 });
 
 // Iniciar servidor
-const PORT = process.env.PORT || 3000;
-const IP = process.env.SERVER_IP || '192.168.100.212'; // Cambia a tu IP local
-server.listen(PORT, IP, () => {
-    console.log(`✅ Servidor en http://${IP}:${PORT}`);
-    console.log(`🔴 Cocina: http://${IP}:${PORT}/cocina (Usuario: ${process.env.COOK_USER})`);
-    console.log(`🔵 Admin: http://${IP}:${PORT}/admin (Usuario: ${process.env.ADMIN_USER})`);
-    console.log(`📊 Histórico: http://${IP}:${PORT}/historico`);
-    console.log(`📥 Reportes: http://${IP}:${PORT}/descargar-excel`);
+const PORT = process.env.PORT || 10000;
+server.listen(PORT, () => {
+    console.log(`✅ Servidor en puerto ${PORT}`);
 });
