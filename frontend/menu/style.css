@@ -1537,32 +1537,12 @@ h1, h2, h3 {
 .reporte-container {
   text-align: center;
 }
-/* Estilos generales */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-
-.admin-body {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-h1 {
-    text-align: center;
-    color: #333;
-}
-
-/* Formulario */
+/* Estilos para el formulario de administración */
 .form-admin {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-top: 20px;
 }
 
 .form-group {
@@ -1573,6 +1553,7 @@ h1 {
 
 .form-group label {
     font-weight: bold;
+    color: #333;
 }
 
 .form-group input,
@@ -1582,6 +1563,14 @@ h1 {
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    background-color: #fff;
+}
+
+.form-group input[type="file"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }
 
 .btn-submit {
@@ -1592,13 +1581,14 @@ h1 {
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
+    transition: background-color 0.3s ease;
 }
 
 .btn-submit:hover {
     background-color: #218838;
 }
 
-/* Lista de productos */
+/* Estilos para la lista de productos */
 .lista-productos {
     margin-top: 20px;
 }
@@ -1621,6 +1611,12 @@ h1 {
     color: #555;
 }
 
+.producto img {
+    max-width: 100px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
 .btn-eliminar {
     padding: 5px 10px;
     background-color: #dc3545;
@@ -1628,6 +1624,7 @@ h1 {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .btn-eliminar:hover {
