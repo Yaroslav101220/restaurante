@@ -6,6 +6,7 @@ const cors = require('cors');
 const fs = require('fs');
 const ExcelJS = require('exceljs');
 const jwt = require('jsonwebtoken');
+const multer = require('multer'); // Para manejar la subida de imágenes
 require('dotenv').config();
 
 const app = express();
@@ -13,6 +14,17 @@ const server = http.createServer(app);
 const io = socketIo(server, {
     cors: { origin: "*", methods: ["GET", "POST"] }
 });
+
+// Configuración de multer para subir imágenes
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, 'uploads')); // Carpeta donde se guardarán las imágenes
+    },
+    filename: (req, file, cb) => {
+        cb(null, Date.now() + '-' + file.originalname); // Nombre único para cada imagen
+    }
+});
+const upload = multer({ storage });
 
 // Archivos de datos
 const MENU_FILE = path.join(__dirname, 'menu.json');
@@ -108,6 +120,7 @@ setInterval(() => {
 
 app.use(cors());
 app.use(express.static(path.join(__dirname, '../frontend/menu')));
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Servir imágenes subidas
 app.use(express.json());
 
 // ==================== SEGURIDAD MEJORADA ==================== 
@@ -188,10 +201,11 @@ app.put('/orden/:id', (req, res) => {
 // Endpoints para el menú
 app.get('/menu', (req, res) => res.json(menu));
 
-app.post('/menu', (req, res) => {
-    const { nombre, categoria, imagen, precioCop, precioUsd, descripcion } = req.body;
+app.post('/menu', upload.single('imagen'), (req, res) => {
+    const { nombre, categoria, precioCop, precioUsd, descripcion } = req.body;
+    const imagen = req.file ? `/uploads/${req.file.filename}` : req.body.imagen; // Usar imagen subida o URL
 
-    if (!nombre || !categoria || !imagen || !precioCop || !precioUsd || !descripcion) {
+    if (!nombre || !categoria || !descripcion || (!precioCop && !precioUsd)) {
         return res.status(400).send('Faltan campos obligatorios');
     }
 
@@ -200,8 +214,8 @@ app.post('/menu', (req, res) => {
         nombre,
         categoria,
         imagen,
-        precioCop,
-        precioUsd,
+        precioCop: precioCop || 0,
+        precioUsd: precioUsd || 0,
         descripcion
     };
 
@@ -211,9 +225,12 @@ app.post('/menu', (req, res) => {
     res.status(201).json(newProduct);
 });
 
-app.put('/menu/:id', (req, res) => {
+app.put('/menu/:id', upload.single('imagen'), (req, res) => {
     const { id } = req.params;
     const updates = req.body;
+    if (req.file) {
+        updates.imagen = `/uploads/${req.file.filename}`; // Actualizar imagen si se subió una nueva
+    }
 
     const productIndex = menu.findIndex(p => p.id == id);
     if (productIndex === -1) {
