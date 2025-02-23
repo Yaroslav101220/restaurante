@@ -5,184 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración del Menú</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Añado animaciones y fuentes para mejor UI -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="admin-body">
-    <div class="admin-container">
-        <h1 class="animate__animated animate__fadeInDown">Administración del Menú <i class="fas fa-utensils"></i></h1>
+<body class="admin-body"> 
+    <h1>Administración del Menú</h1>
+    <div id="mensajes" class="mensaje-oculto"></div>
+    <form id="productForm">
+        <!-- Campos existentes -->
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" required>
         
-        <div id="mensajes" class="mensaje-oculto"></div>
+        <label for="categoria">Categoría:</label>
+        <select id="categoria" required>
+            <option value="general">Menú General</option>
+            <option value="sopas">Sopas del Día</option>
+            <option value="bebidas">Gaseosas y Bebidas</option>
+        </select>
+        
+        <!-- Nuevo campo para sabores (solo visible en bebidas) -->
+        <div id="saboresContainer" style="display: none;">
+            <label for="sabores">Sabores (separados por comas):</label>
+            <input type="text" id="sabores" placeholder="Ej: Coca-Cola, Pepsi, Sprite">
+        </div>
+        
+        <label for="imagen">URL de la Imagen:</label>
+        <input type="url" id="imagen" required>
+        
+        <label for="precioCop">Precio (COP):</label>
+        <input type="number" id="precioCop" required>
+        
+        <label for="precioUsd">Precio (USD):</label>
+        <input 
+            type="number" 
+            id="precioUsd" 
+            step="0.01" 
+            lang="en"
+            required
+            placeholder="Ej: 8.75"
+        >
+        
+        <label for="descripcion">Descripción:</label>
+        <textarea id="descripcion" required></textarea>
+        
+        <button type="submit">Agregar Producto</button>
+    </form>
 
-        <!-- Formulario Mejorado con Estilos -->
-        <form id="productForm" class="admin-form">
-            <div class="form-group">
-                <label for="nombre">Nombre:</label>
-                <input type="text" id="nombre" required class="form-input">
-            </div>
+    <h2>Lista de Productos</h2>
+    <ul id="productList"></ul>
 
-            <div class="form-group">
-                <label for="categoria">Categoría:</label>
-                <select id="categoria" required class="form-select" onchange="toggleSabores()">
-                    <option value="general">Menú General</option>
-                    <option value="sopas">Sopas del Día</option>
-                    <option value="bebidas">Gaseosas y Bebidas</option>
-                </select>
-            </div>
-
-            <div class="form-group" id="saboresContainer" style="display: none;">
-                <label for="sabores">Sabores:</label>
-                <input type="text" id="sabores" class="form-input" 
-                       placeholder="Ej: Coca-Cola, Pepsi, Sprite"
-                       data-toggle="tooltip" 
-                       title="Separar sabores con comas">
-            </div>
-
-            <div class="form-group">
-                <label for="imagen">URL de la Imagen:</label>
-                <input type="url" id="imagen" required class="form-input">
-            </div>
-
-            <div class="price-group">
-                <div class="form-group">
-                    <label for="precioCop">Precio (COP):</label>
-                    <input type="number" id="precioCop" required class="form-input">
-                </div>
-                
-                <div class="form-group">
-                    <label for="precioUsd">Precio (USD):</label>
-                    <input type="number" id="precioUsd" step="0.01" lang="en"
-                           required class="form-input" placeholder="Ej: 8.75">
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label for="descripcion">Descripción:</label>
-                <textarea id="descripcion" required class="form-textarea"></textarea>
-            </div>
-
-            <button type="submit" class="btn-submit">
-                <i class="fas fa-plus-circle"></i> Agregar Producto
-            </button>
-        </form>
-
-        <h2 class="product-list-title">Lista de Productos <i class="fas fa-list"></i></h2>
-        <ul id="productList" class="product-grid"></ul>
-    </div>
-
-    <script>
-        // Función para mostrar/ocultar sabores
-        function toggleSabores() {
-            const categoria = document.getElementById('categoria').value;
-            const saboresContainer = document.getElementById('saboresContainer');
-            saboresContainer.style.display = categoria === 'bebidas' ? 'block' : 'none';
-        }
-
-        // Mostrar mensajes en la interfaz
-        function showMessage(text, isError = false) {
-            const mensajes = document.getElementById('mensajes');
-            mensajes.textContent = text;
-            mensajes.className = isError ? 'mensaje-error' : 'mensaje-exito';
-            setTimeout(() => mensajes.className = 'mensaje-oculto', 3000);
-        }
-
-        // Cargar productos desde la API
-        async function loadProducts() {
-            try {
-                const response = await fetch('https://restaurante-jkxc.onrender.com/menu');
-                const products = await response.json();
-                
-                const productList = document.getElementById('productList');
-                productList.innerHTML = products.map(product => `
-                    <li class="product-card">
-                        <img src="${product.imagen}" alt="${product.nombre}" class="product-image">
-                        <div class="product-info">
-                            <h3>${product.nombre}</h3>
-                            <p class="product-category">${getCategoryName(product.categoria)}</p>
-                            <p class="product-desc">${product.descripcion}</p>
-                            ${product.sabores ? `<p class="product-flavors">Sabores: ${product.sabores}</p>` : ''}
-                            <div class="product-prices">
-                                <span class="price-cop">$${product.precioCop.toLocaleString('es-CO')} COP</span>
-                                <span class="price-usd">$${product.precioUsd.toFixed(2)} USD</span>
-                            </div>
-                            <button class="btn-delete" onclick="deleteProduct('${product.id}')">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </li>
-                `).join('');
-            } catch (error) {
-                showMessage('Error cargando productos', true);
-            }
-        }
-
-        // Manejador de envío de formulario
-        document.getElementById('productForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const productData = {
-                nombre: document.getElementById('nombre').value,
-                categoria: document.getElementById('categoria').value,
-                descripcion: document.getElementById('descripcion').value,
-                imagen: document.getElementById('imagen').value,
-                precioCop: parseFloat(document.getElementById('precioCop').value),
-                precioUsd: parseFloat(document.getElementById('precioUsd').value),
-                sabores: document.getElementById('categoria').value === 'bebidas' 
-                          ? document.getElementById('sabores').value.split(',').map(s => s.trim())
-                          : null
-            };
-
-            try {
-                const response = await fetch('https://restaurante-jkxc.onrender.com/menu', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(productData)
-                });
-
-                if (response.ok) {
-                    showMessage('Producto agregado exitosamente');
-                    loadProducts();
-                    document.getElementById('productForm').reset();
-                } else {
-                    throw new Error('Error en la respuesta del servidor');
-                }
-            } catch (error) {
-                showMessage('Error agregando producto: ' + error.message, true);
-            }
-        });
-
-        // Función para eliminar productos
-        window.deleteProduct = async (id) => {
-            if (confirm('¿Estás seguro de eliminar este producto?')) {
-                try {
-                    const response = await fetch(`https://restaurante-jkxc.onrender.com/menu/${id}`, {
-                        method: 'DELETE'
-                    });
-                    
-                    if (response.ok) {
-                        showMessage('Producto eliminado exitosamente');
-                        loadProducts();
-                    }
-                } catch (error) {
-                    showMessage('Error eliminando producto', true);
-                }
-            }
-        };
-
-        // Helper para nombres de categoría
-        function getCategoryName(category) {
-            return {
-                general: 'Menú General',
-                sopas: 'Sopas del Día',
-                bebidas: 'Bebidas'
-            }[category];
-        }
-
-        // Cargar productos al iniciar
-        loadProducts();
-    </script>
+    <script src="admin.js"></script>
 </body>
 </html>
