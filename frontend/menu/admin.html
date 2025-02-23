@@ -1,13 +1,10 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Administración del Menú</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Restaurante BAR Parrilla Internacional</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body class="admin-body"> 
     <h1>Administración del Menú</h1>
@@ -16,19 +13,6 @@
             <svg class="notificacion-icon" viewBox="0 0 24 24"></svg>
             <span class="notificacion-text"></span>
         </div>
-<body>
-    <div class="admin-body">
-        <h1 class="animate__animated animate__fadeInDown">Administración 🛠️</h1>
-        <form id="form-producto">
-            <input type="text" id="nombre" placeholder="Nombre del producto" required>
-            <input type="text" id="categoria" placeholder="Categoría" required>
-            <input type="text" id="descripcion" placeholder="Descripción" required>
-            <input type="number" id="precioCop" placeholder="Precio COP">
-            <input type="number" id="precioUsd" placeholder="Precio USD">
-            <input type="file" id="imagen" accept="image/*"> <!-- Campo para subir imágenes -->
-            <button type="submit">Agregar Producto</button>
-        </form>
-        <div id="lista-productos"></div>
     </div>
 
     <div id="customConfirm" class="modal-confirm">
@@ -42,9 +26,6 @@
             </div>
         </div>
     </div>
-    <script>
-        const form = document.getElementById('form-producto');
-        const listaProductos = document.getElementById('lista-productos');
 
     <form id="productForm">
         <label for="nombre">Nombre:</label>
@@ -88,67 +69,10 @@
             📥 Descargar Reporte Diario
         </button>
     </div>
-        // Cargar productos al iniciar
-        const cargarProductos = async () => {
-            const response = await fetch('https://restaurante-jkxc.onrender.com/menu');
-            const productos = await response.json();
-            listaProductos.innerHTML = productos.map(producto => `
-                <div class="producto">
-                    <h3>${producto.nombre}</h3>
-                    <p>${producto.descripcion}</p>
-                    <p>Precio COP: $${producto.precioCop.toLocaleString('es-CO')}</p>
-                    <p>Precio USD: $${producto.precioUsd.toFixed(2)}</p>
-                    <img src="${producto.imagen}" alt="${producto.nombre}" width="100">
-                    <button onclick="eliminarProducto(${producto.id})">Eliminar</button>
-                </div>
-            `).join('');
-        };
-
-        // Agregar producto
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData();
-            formData.append('nombre', document.getElementById('nombre').value);
-            formData.append('categoria', document.getElementById('categoria').value);
-            formData.append('descripcion', document.getElementById('descripcion').value);
-            formData.append('precioCop', document.getElementById('precioCop').value);
-            formData.append('precioUsd', document.getElementById('precioUsd').value);
-            formData.append('imagen', document.getElementById('imagen').files[0]); // Subir imagen
-
-            const response = await fetch('https://restaurante-jkxc.onrender.com/menu', {
-                method: 'POST',
-                body: formData
-            });
-
-            if (response.ok) {
-                alert('Producto agregado correctamente');
-                cargarProductos();
-            } else {
-                alert('Error al agregar el producto');
-            }
-        });
-
-        // Eliminar producto
-        window.eliminarProducto = async (id) => {
-            const response = await fetch(`https://restaurante-jkxc.onrender.com/menu/${id}`, {
-                method: 'DELETE'
-            });
 
     <h2>Lista de Productos</h2>
     <ul id="productList"></ul>
-            if (response.ok) {
-                alert('Producto eliminado correctamente');
-                cargarProductos();
-            } else {
-                alert('Error al eliminar el producto');
-            }
-        };
 
     <script src="admin.js"></script>
-        // Cargar productos al iniciar
-        cargarProductos();
-    </script>
 </body>
-</html>
 </html>
