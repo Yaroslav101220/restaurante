@@ -1537,96 +1537,86 @@ h1, h2, h3 {
 .reporte-container {
   text-align: center;
 }
-/* Estilos para el formulario de administración */
-.form-admin {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 20px;
+/* ------------------------- */
+/* ESTILOS PARA EL CAMPO DE SUBIDA DE IMÁGENES */
+/* ------------------------- */
+
+#productForm input[type="file"] {
+  grid-column: span 2;
+  padding: 12px;
+  border: 2px solid #d7ccc8;
+  background: rgba(255, 255, 255, 0.9);
+  font-size: 1rem;
+  color: #5d4037;
 }
 
-.form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+#productForm input[type="file"]::file-selector-button {
+  padding: 8px 12px;
+  background: #8d6e63;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.form-group label {
-    font-weight: bold;
-    color: #333;
+#productForm input[type="file"]::file-selector-button:hover {
+  background: #6d4c41;
 }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: #fff;
-}
+/* ------------------------- */
+/* ESTILOS PARA LA LISTA DE PRODUCTOS */
+/* ------------------------- */
 
-.form-group input[type="file"] {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-}
-
-.btn-submit {
-    padding: 10px;
-    background-color: #28a745;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
-}
-
-.btn-submit:hover {
-    background-color: #218838;
-}
-
-/* Estilos para la lista de productos */
-.lista-productos {
-    margin-top: 20px;
+#lista-productos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
 }
 
 .producto {
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin-bottom: 10px;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+  border: 2px solid #d7ccc8;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .producto h3 {
-    margin: 0;
-    color: #333;
+  margin: 0 0 10px;
+  color: #5d4037;
+  font-size: 1.5rem;
 }
 
 .producto p {
-    margin: 5px 0;
-    color: #555;
+  margin: 5px 0;
+  color: #5d4037;
+  font-size: 1rem;
 }
 
 .producto img {
-    max-width: 100px;
-    border-radius: 5px;
-    margin-top: 10px;
+  max-width: 100%;
+  border-radius: 8px;
+  margin-top: 10px;
 }
 
 .btn-eliminar {
-    padding: 5px 10px;
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background: #8d6e63;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+  margin-top: 10px;
 }
 
 .btn-eliminar:hover {
-    background-color: #c82333;
+  background: #6d4c41;
 }
