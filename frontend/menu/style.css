@@ -1,6 +1,964 @@
-/* ====================== */
-/* ESTILOS GENERALES */
-/* ====================== */
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.orden-container {
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Sistema de 4 columnas */
+#lista-ordenes {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  padding: 10px;
+}
+
+.orden {
+  background: white;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-left: 5px solid transparent;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Prioridades */
+.orden.alta { border-left-color: #dc3545; }
+.orden.baja { border-left-color: #ffc107; }
+
+/* Estados */
+.orden.preparando { background: #fff3cd; }
+.orden.listo { background: #d4edda; }
+
+.orden-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.prioridad {
+  background: #e9ecef;
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.8em;
+}
+
+.orden-acciones select {
+  width: 100%;
+  padding: 8px;
+  margin-top: auto;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  #lista-ordenes { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 768px) {
+  #lista-ordenes { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 480px) {
+  #lista-ordenes { grid-template-columns: 1fr; }
+}
+
+/* Resto de estilos (filtros, botones, etc.) */
+.filtros {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.filtro {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.filtro.activo {
+  background: #007bff;
+  color: white;
+}
+
+.timestamp {
+  color: #666;
+  font-size: 0.9em;
+}
+
+.nota {
+  margin-top: 10px;
+  font-style: italic;
+  color: #666;
+}
+
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  margin: 0;
+  padding: 0;
+}
+
+.orden-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Nuevos estilos para prioridades y estados */
+.orden {
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 15px 0;
+  padding: 20px;
+  transition: transform 0.3s ease;
+  border-left: 5px solid transparent;
+}
+
+.orden.alta { border-left-color: #dc3545; }
+.orden.baja { border-left-color: #ffc107; }
+
+.orden.preparando { background: #fff3cd; }
+.orden.listo { background: #d4edda; }
+
+.orden:hover {
+  transform: translateY(-5px);
+}
+
+.orden h3 {
+  color: #dc3545;
+  margin-top: 0;
+}
+
+.orden ul {
+  list-style: none;
+  padding: 0;
+}
+
+.orden li {
+  padding: 5px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.orden .total {
+  font-weight: bold;
+  color: #28a745;
+  margin-top: 15px;
+}
+
+.orden .nota {
+  margin-top: 10px;
+  font-style: italic;
+  color: #666;
+}
+
+.timestamp {
+  color: #666;
+  font-size: 0.9em;
+  margin-bottom: 10px;
+}
+
+/* Filtros */
+.filtros {
+  margin: 20px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.filtro {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background: #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.filtro.activo {
+  background: #007bff;
+  color: white;
+}
+
+/* Estilos existentes */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.seccion {
+  margin-bottom: 40px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.seccion:hover {
+  transform: translateY(-5px);
+}
+
+.seccion h2 {
+  color: #dc3545;
+  border-bottom: 2px solid #dc3545;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.plato {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.plato:hover {
+  transform: scale(1.05);
+}
+
+.plato img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.plato .info {
+  padding: 15px;
+}
+
+.plato h3 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #333;
+}
+
+.plato p {
+  margin: 10px 0;
+  color: #666;
+  font-size: 1rem;
+}
+
+.plato .precio {
+  font-weight: bold;
+  color: #28a745;
+  font-size: 1.1rem;
+}
+
+.plato button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.plato button:hover {
+  background-color: #218838;
+}
+
+#notas {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-top: 10px;
+}
+
+.pedido {
+  margin-top: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pedido h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+#lista-pedido {
+  list-style: none;
+  padding: 0;
+}
+
+#lista-pedido li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+}
+
+#lista-pedido li button {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+#total-cop, #total-usd {
+  font-weight: bold;
+  color: #1a237e;
+  font-size: 1.2rem;
+}
+
+.cantidad {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 10px;
+}
+
+.btn-cantidad {
+  background: #1a237e;
+  color: white;
+  border: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cantidad:hover {
+  background-color: #0d47a1;
+}
+
+#mensaje-confirmacion {
+  margin-top: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+#mensaje-confirmacion p {
+  font-size: 1.2rem;
+  color: #28a745;
+}
+
+#nuevo-pedido {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#nuevo-pedido:hover {
+  background-color: #218838;
+}
+
+.mensaje-oculto {
+  display: none;
+}
+
+/* Estilos para el header de las órdenes */
+.orden-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.prioridad {
+  padding: 3px 8px;
+  border-radius: 10px;
+  font-size: 0.8em;
+  background: #e9ecef;
+}
+
+.orden-acciones select {
+  width: 100%;
+  padding: 5px;
+  margin-top: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+/*cambiamos el codigo css*/
+
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('https://img.freepik.com/fotos-premium/barbacoa-acero-vacia-parrilla-parrilla-llamas-fuego-chispas-humo-sobre-fondo-negro-cocinando_157927-18733.jpg?w=360');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff; /* Texto blanco para contrastar con el fondo oscuro */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente para el contenido */
+  border-radius: 10px;
+}
+
+h1, h2, h3 {
+  color: #fff; /* Texto blanco para los títulos */
+}
+
+/* Estilos para las secciones del menú */
+.seccion {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente para las secciones */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.seccion:hover {
+  transform: translateY(-5px);
+}
+
+/* Estilos para los platos */
+.plato {
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente para los platos */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  margin: 10px;
+}
+
+.plato:hover {
+  transform: scale(1.05);
+}
+
+.plato img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.plato .info {
+  padding: 15px;
+}
+
+.plato h3 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #fff; /* Texto blanco para los nombres de los platos */
+}
+
+.plato p {
+  margin: 10px 0;
+  color: #ddd; /* Texto gris claro para las descripciones */
+  font-size: 1rem;
+}
+
+.plato .precio {
+  font-weight: bold;
+  color: #ffcc00; /* Color amarillo para los precios */
+  font-size: 1.1rem;
+}
+
+.plato button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.plato button:hover {
+  background-color: #218838;
+}
+
+/* Estilos para el área de notas */
+#notas {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-top: 10px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
+  color: #fff; /* Texto blanco */
+}
+
+/* Estilos para el resumen del pedido */
+.pedido {
+  margin-top: 30px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pedido h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #fff; /* Texto blanco */
+}
+
+#lista-pedido {
+  list-style: none;
+  padding: 0;
+}
+
+#lista-pedido li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #444; /* Línea divisoria más oscura */
+  font-size: 1rem;
+  color: #fff; /* Texto blanco */
+}
+
+#lista-pedido li button {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+#total-cop, #total-usd {
+  font-weight: bold;
+  color: #ffcc00; /* Color amarillo para los totales */
+  font-size: 1.2rem;
+}
+
+/* Estilos para los botones de cantidad */
+.cantidad {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 10px;
+}
+
+.btn-cantidad {
+  background: #1a237e;
+  color: white;
+  border: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cantidad:hover {
+  background-color: #0d47a1;
+}
+
+/* Mensaje de confirmación */
+#mensaje-confirmacion {
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+#mensaje-confirmacion p {
+  font-size: 1.2rem;
+  color: #28a745;
+}
+
+#nuevo-pedido {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#nuevo-pedido:hover {
+  background-color: #218838;
+}
+
+.mensaje-oculto {
+  display: none;
+}
+
+/*cambiamos el codigo css*/
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-image: url('https://img.freepik.com/fotos-premium/barbacoa-acero-vacia-parrilla-parrilla-llamas-fuego-chispas-humo-sobre-fondo-negro-cocinando_157927-18733.jpg?w=360');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #fff; /* Texto blanco para contrastar con el fondo oscuro */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7); /* Fondo semitransparente para el contenido */
+  border-radius: 10px;
+}
+
+h1, h2, h3 {
+  color: #fff; /* Texto blanco para los títulos */
+}
+
+/* Estilos para las secciones del menú */
+.seccion {
+  margin-bottom: 40px;
+  padding: 20px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente para las secciones */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.seccion:hover {
+  transform: translateY(-5px);
+}
+
+/* Estilos para los platos */
+.plato {
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente para los platos */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  width: 100%;
+  max-width: 300px;
+  text-align: center;
+  transition: transform 0.3s ease;
+  margin: 10px;
+}
+
+.plato:hover {
+  transform: scale(1.05);
+}
+
+.plato img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.plato .info {
+  padding: 15px;
+}
+
+.plato h3 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #fff; /* Texto blanco para los nombres de los platos */
+}
+
+.plato p {
+  margin: 10px 0;
+  color: #ddd; /* Texto gris claro para las descripciones */
+  font-size: 1rem;
+}
+
+.plato .precio {
+  font-weight: bold;
+  color: #ffcc00; /* Color amarillo para los precios */
+  font-size: 1.1rem;
+}
+
+.plato button {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.plato button:hover {
+  background-color: #218838;
+}
+
+/* Estilos para el área de notas */
+#notas {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+  margin-top: 10px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
+  color: #fff; /* Texto blanco */
+}
+
+/* Estilos para el resumen del pedido */
+.pedido {
+  margin-top: 30px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.pedido h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #fff; /* Texto blanco */
+}
+
+#lista-pedido {
+  list-style: none;
+  padding: 0;
+}
+
+#lista-pedido li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #444; /* Línea divisoria más oscura */
+  font-size: 1rem;
+  color: #fff; /* Texto blanco */
+}
+
+#lista-pedido li button {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+#total-cop, #total-usd {
+  font-weight: bold;
+  color: #ffcc00; /* Color amarillo para los totales */
+  font-size: 1.2rem;
+}
+
+/* Estilos para los botones de cantidad */
+.cantidad {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 10px;
+}
+
+.btn-cantidad {
+  background: #1a237e;
+  color: white;
+  border: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-cantidad:hover {
+  background-color: #0d47a1;
+}
+
+/* Mensaje de confirmación */
+#mensaje-confirmacion {
+  margin-top: 20px;
+  background-color: rgba(255, 255, 255, 0.1); /* Fondo semitransparente */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+#mensaje-confirmacion p {
+  font-size: 1.2rem;
+  color: #28a745;
+}
+
+#nuevo-pedido {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+#nuevo-pedido:hover {
+  background-color: #218838;
+}
+
+.mensaje-oculto {
+  display: none;
+}
+
+/* ------------------------- */
+/* ESTILOS ESPECÍFICOS PARA COCINA */
+/* ------------------------- */
+
+/* Fondo general para la vista de cocina */
+body.cocina {
+  background: #f8f9fa; /* Fondo claro para mejor contraste */
+  color: #212529; /* Texto oscuro */
+}
+
+.orden-container {
+  background: rgba(255, 255, 255, 0.95); /* Fondo blanco sólido */
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+}
+
+/* Tarjetas de órdenes */
+.orden {
+  background: white !important;
+  border-left: 5px solid;
+  color: #343a40; /* Texto oscuro */
+  margin: 15px 0;
+}
+
+/* Prioridades */
+.orden.alta { border-left-color: #dc3545; }
+.orden.baja { border-left-color: #ffc107; }
+
+/* Estados */
+.orden.preparando {
+  background: #fff3cd !important;
+  border-left-color: #ffc107 !important;
+}
+
+.orden.listo {
+  background: #d4edda !important;
+  border-left-color: #28a745 !important;
+}
+
+/* Textos y metadatos */
+.orden-header h3 {
+  color: #2c3e50 !important; /* Azul oscuro profesional */
+  font-size: 1.4rem;
+}
+
+.prioridad {
+  background: #e9ecef;
+  color: #495057 !important; /* Texto más oscuro */
+  font-weight: 600;
+}
+
+.timestamp {
+  color: #6c757d !important; /* Gris para información secundaria */
+}
+
+/* Selectores y botones */
+.orden-acciones select {
+  background: white;
+  border: 2px solid #dee2e6;
+  color: #495057;
+  font-weight: 500;
+}
+
+/* Filtros activos */
+.filtro.activo {
+  background: #2c3e50 !important; /* Azul oscuro */
+  color: white !important;
+}
+
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: #1a1a1a url('https://img.freepik.com/fotos-premium/barbacoa-acero-vacia-parrilla-parrilla-llamas-fuego-chispas-humo-sobre-fondo-negro-cocinando_157927-18733.jpg?w=360') fixed;
+  color: white;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+}
+
+/* ... (estilos existentes para platos, pedidos, etc.) ... */
+/* Estilos generales */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -24,9 +982,7 @@ h1, h2, h3 {
   color: #fff;
 }
 
-/* ====================== */
-/* ESTILOS PARA SECCIONES */
-/* ====================== */
+/* Estilos para las secciones del menú */
 .seccion {
   margin-bottom: 40px;
   padding: 20px;
@@ -40,9 +996,7 @@ h1, h2, h3 {
   transform: translateY(-5px);
 }
 
-/* ====================== */
-/* ESTILOS PARA PLATOS */
-/* ====================== */
+/* Estilos para los platos */
 .plato {
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
@@ -105,97 +1059,13 @@ h1, h2, h3 {
   background-color: #218838;
 }
 
-/* ====================== */
-/* ESTILOS PARA PEDIDOS */
-/* ====================== */
-.pedido {
-  margin-top: 30px;
-  background-color: rgba(255, 255, 255, 0.1);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
+/* ... (resto de los estilos) ... */
 
-.pedido h2 {
-  margin-top: 0;
-  font-size: 1.5rem;
-  color: #fff;
-}
-
-#lista-pedido {
-  list-style: none;
-  padding: 0;
-}
-
-#lista-pedido li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid #444;
-  font-size: 1rem;
-  color: #fff;
-}
-
-#lista-pedido li button {
-  background: none;
-  border: none;
-  color: #dc3545;
-  cursor: pointer;
-  font-size: 1.2rem;
-}
-
-#total-cop, #total-usd {
-  font-weight: bold;
-  color: #ffcc00;
-  font-size: 1.2rem;
-}
 
 /* ====================== */
-/* ESTILOS PARA BOTONES */
+/* ESTILOS ESPECÍFICOS PARA ADMIN */
 /* ====================== */
-.btn-cantidad {
-  background: #1a237e;
-  color: white;
-  border: none;
-  width: 25px;
-  height: 25px;
-  border-radius: 50%;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
 
-.btn-cantidad:hover {
-  background-color: #0d47a1;
-}
-
-#confirmar-pedido {
-  background-color: #66e080d5;
-  color: rgb(255, 255, 255);
-  border: none;
-  padding: 10px 20px;
-  font-size: 1.2rem;
-  border-radius: 25px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  margin-top: 20px;
-  width: 100%;
-  max-width: 300px;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-#confirmar-pedido:hover {
-  background-color: #4eafcf67;
-  transform: scale(1.05);
-}
-
-/* ====================== */
-/* ESTILOS PARA ADMIN */
-/* ====================== */
 .admin-body {
   background-image: url('https://us.123rf.com/450wm/alexraths/alexraths1510/alexraths151000038/46735189-fije-la-tarjeta-de-men%C3%BA-para-restaurantes-en-el-fondo-de-madera.jpg?ver=6');
   background-size: cover;
@@ -292,62 +1162,378 @@ h1, h2, h3 {
   transform: scale(1.05);
 }
 
-/* ====================== */
-/* RESPONSIVE DESIGN */
-/* ====================== */
+/* Responsive Design */
 @media (max-width: 768px) {
   #productForm {
-    padding: 20px !important;
-    border-radius: 20px !important;
-    margin: 0 15px !important;
+      padding: 15px;
+      margin: 0 15px 30px;
   }
-
-  #productForm input,
-  #productForm select,
-  #productForm textarea {
-    width: 100% !important;
-    padding: 5px !important;
-    margin-bottom: 10px !important;
-  }
-
-  #productForm button {
-    width: 100% !important;
-    padding: 12px !important;
-    font-size: 1rem !important;
-  }
-
-  #productForm label {
-    font-size: 0.9rem !important;
-    margin: 10px 0 5px !important;
-  }
-
-  #saboresContainer {
-    margin-top: 10px !important;
-  }
-
+  
   .admin-body h1 {
-    font-size: 1.8rem !important;
-    margin-bottom: 1rem !important;
+      font-size: 2rem;
   }
 }
 
-@media (max-width: 480px) {
-  .admin-body {
-    padding: 10px !important;
-  }
-
+@media (min-width: 992px) {
   #productForm {
-    padding: 45px !important;
-    border-radius: 15px !important;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+  }
+  
+  #productForm textarea {
+      grid-column: span 2;
+  }
+  
+  #productForm button {
+      grid-column: span 2;
+      width: 50%;
+      margin: 0 auto;
+  }
+}
+
+/* Añadir al final del archivo */
+.total-orden {
+  margin-top: 15px;
+  padding: 10px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  text-align: right;
+}
+
+.total-cop {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.total-usd {
+  color: #1a237e;
+  font-weight: bold;
+}
+
+
+/* ------------------------- */
+/* ESTILOS PARA ADMIN.HTML */
+/* ------------------------- */
+
+#productForm {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 60px;
+}
+
+#productForm label {
+  grid-column: span 2;
+  color: #5d4037;
+  font-weight: 600;
+}
+
+#productForm input, 
+#productForm select, 
+#productForm textarea {
+  grid-column: span 2;
+  padding: 12px;
+  border: 2px solid #d7ccc8;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+#saboresContainer {
+  grid-column: span 2;
+  display: none; /* Se activa con JS */
+}
+
+#productForm button {
+  grid-column: span 2;
+  width: 50%;
+  margin: 0 auto;
+  background: #8d6e63 !important;
+  color: rgb(255, 255, 255) !important;
+  padding: 16px;
+}
+
+/* Mostrar sabores solo para bebidas */
+#categoria[value="bebidas"] ~ #saboresContainer {
+  display: block !important;
+}
+
+/* Ajustes para pantallas pequeñas */
+@media (max-width: 768px) {
+  #productForm {
+    grid-template-columns: 1fr;
+    padding: 15px;
+  }
+}
+/* ------------------------- */
+/* ESTILOS PARA SELECTOR DE SABORES */
+/* ------------------------- */
+
+.sabor-jugo {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 2px solid #ffcc00;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.7) !important; /* Fondo oscuro */
+  color: white !important; /* Letras blancas */
+  font-size: 1rem;
+}
+
+.sabor-jugo option {
+  background: #333; /* Fondo para las opciones */
+  color: white; /* Letras blancas */
+  padding: 10px;
+}
+
+/* ====================== */
+/* MESA CENTRADA DEBAJO DEL TOTAL */
+/* ====================== */
+.mesa-container {
+  text-align: center;
+  margin: 15px 0;
+}
+
+.mesa {
+  background: #ebe481fd;
+  color: rgb(7, 7, 7);
+  padding: 12px 20px;
+  border-radius: 20px;
+  font-weight: bold;
+  display: inline-block;
+  margin-top: 10px;
+}
+
+
+
+/* Notificaciones modernas */
+.notificacion {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  z-index: 1000;
+}
+
+.notificacion.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.notificacion-icon {
+  width: 28px;
+  height: 28px;
+  fill: white;
+}
+
+.notificacion-text {
+  color: white;
+  font-weight: 500;
+  font-size: 16px;
+}
+
+/* Modal de confirmación */
+.modal-confirm {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  z-index: 999;
+}
+
+.confirm-content {
+  position: relative;
+  background: white;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.confirm-content h3 {
+  margin: 0 0 15px;
+  color: #333;
+  font-size: 1.4rem;
+}
+
+.confirm-content p {
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.confirm-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+
+.confirm-buttons button {
+  padding: 12px 30px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+#confirmCancel {
+  background: #e0e0e0;
+  color: #666;
+}
+
+#confirmCancel:hover {
+  background: #d0d0d0;
+}
+
+#confirmDelete {
+  background: #ff4444;
+  color: white;
+}
+
+#confirmDelete:hover {
+  background: #cc0000;
+}
+
+.close-confirm {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  transition: color 0.3s ease;
+}
+
+.close-confirm:hover {
+  color: #333;
+}
+/* Estilos para el botón "Confirmar Pedido" */
+#confirmar-pedido {
+  background-color: #66e080d5; /* Color de fondo */
+  color: rgb(255, 255, 255); /* Color del texto */
+  border: none; /* Sin borde */
+  padding: 10px 20px; /* Tamaño del botón (ajusta según necesites) */
+  font-size: 1.2rem; /* Tamaño de la fuente */
+  border-radius: 25px; /* Bordes redondeados */
+  cursor: pointer; /* Cambia el cursor al pasar por encima */
+  transition: background-color 0.3s ease; /* Transición suave al cambiar de color */
+  margin-top: 20px; /* Margen superior */
+  width: 100%; /* Ancho completo */
+  max-width: 300px; /* Ancho máximo */
+  display: block; /* Para centrar el botón */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Cambiar el color de fondo al pasar el mouse */
+#confirmar-pedido:hover {
+  background-color: #4eafcf67; /* Color de fondo más oscuro al pasar el mouse */
+}
+#confirmar-pedido {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+#confirmar-pedido:hover {
+  transform: scale(1.05); /* Aumenta ligeramente el tamaño del botón al pasar el mouse */
+}
+
+
+
+/* Estilos para el formulario en móviles */
+@media (max-width: 768px) {
+  #productForm {
+      padding: 20px !important;
+      border-radius: 20px !important;
+      margin: 0 15px !important;
   }
 
   #productForm input,
   #productForm select,
   #productForm textarea {
-    font-size: 0.9rem !important;
+      width: 100% !important;
+      padding: 5px !important;
+      margin-bottom: 10px !important;
   }
 
   #productForm button {
-    font-size: 0.9rem !important;
+      width: 100% !important;
+      padding: 12px !important;
+      font-size: 1rem !important;
   }
+
+  #productForm label {
+      font-size: 0.9rem !important;
+      margin: 10px 0 5px !important;
+  }
+
+  #saboresContainer {
+      margin-top: 10px !important;
+  }
+
+  .admin-body h1 {
+      font-size: 1.8rem !important;
+      margin-bottom: 1rem !important;
+  }
+}
+
+/* Ajustes generales para móviles */
+@media (max-width: 480px) {
+  .admin-body {
+      padding: 10px !important;
+  }
+
+  #productForm {
+      padding: 45px !important;
+      border-radius: 15px !important;
+  }
+
+  #productForm input,
+  #productForm select,
+  #productForm textarea {
+      font-size: 0.9rem !important;
+  }
+
+  #productForm button {
+      font-size: 0.9rem !important;
+  }
+}
+/* Estilos para el botón de Excel */
+.btn-excel {
+  background: #28a745 !important;
+  color: white !important;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  margin: 20px 0;
+  display: inline-block;
+}
+
+.btn-excel:hover {
+  background: #218838 !important;
+  transform: translateY(-2px);
+}
+
+.reporte-container {
+  text-align: center;
 }
