@@ -4,23 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Restaurante BAR Parrilla Internacional</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css"> <!-- Asegúrate de que la ruta sea correcta -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 </head>
 <body>
     <div class="admin-body">
         <h1 class="animate__animated animate__fadeInDown">Administración 🛠️</h1>
-        <form id="form-producto">
-            <input type="text" id="nombre" placeholder="Nombre del producto" required>
-            <input type="text" id="categoria" placeholder="Categoría" required>
-            <input type="text" id="descripcion" placeholder="Descripción" required>
-            <input type="number" id="precioCop" placeholder="Precio COP">
-            <input type="number" id="precioUsd" placeholder="Precio USD">
-            <input type="file" id="imagen" accept="image/*"> <!-- Campo para subir imágenes -->
-            <button type="submit">Agregar Producto</button>
+        
+        <!-- Formulario para agregar productos -->
+        <form id="form-producto" class="form-admin">
+            <div class="form-group">
+                <label for="nombre">Nombre del producto:</label>
+                <input type="text" id="nombre" placeholder="Ej: Hamburguesa" required>
+            </div>
+            <div class="form-group">
+                <label for="categoria">Categoría:</label>
+                <input type="text" id="categoria" placeholder="Ej: General" required>
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea id="descripcion" placeholder="Ej: Hamburguesa con queso y tocino" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="precioCop">Precio COP:</label>
+                <input type="number" id="precioCop" placeholder="Ej: 15000">
+            </div>
+            <div class="form-group">
+                <label for="precioUsd">Precio USD:</label>
+                <input type="number" id="precioUsd" placeholder="Ej: 5.00">
+            </div>
+            <div class="form-group">
+                <label for="imagen">Imagen:</label>
+                <input type="file" id="imagen" accept="image/*">
+            </div>
+            <button type="submit" class="btn-submit">Agregar Producto</button>
         </form>
-        <div id="lista-productos"></div>
+
+        <!-- Lista de productos -->
+        <div id="lista-productos" class="lista-productos"></div>
     </div>
 
     <script>
@@ -38,7 +60,7 @@
                     <p>Precio COP: $${producto.precioCop.toLocaleString('es-CO')}</p>
                     <p>Precio USD: $${producto.precioUsd.toFixed(2)}</p>
                     <img src="${producto.imagen}" alt="${producto.nombre}" width="100">
-                    <button onclick="eliminarProducto(${producto.id})">Eliminar</button>
+                    <button onclick="eliminarProducto(${producto.id})" class="btn-eliminar">Eliminar</button>
                 </div>
             `).join('');
         };
